@@ -1,29 +1,22 @@
 import express from "express";
-import { DataSource } from "typeorm";
-import { Article } from "./entities/Article";
-import { User } from "./entities/User";
+import { AppDataSource } from "./dbconnection";
+import { articleRoute } from "./routes/articles";
+import { userRoute } from "./routes/user";
+import { usersRoute } from "./routes/users";
 const app = express();
+
+app.use(express.json());
+app.use("/api/users", usersRoute);
+app.use("/api/user", userRoute);
+app.use("/api/articles", articleRoute);
 
 app.get("/", (req, res) => {
   res.send("hello mosam here");
 });
 
-const AppDataSource = new DataSource({
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "conduit",
-  password: "conduit",
-  database: "conduit",
-  entities: [Article, User],
-  synchronize: true,
-  logging: false,
-  logger: "advanced-console",
-});
-
 async function start() {
   await AppDataSource.initialize().then(() => {
-    console.log("connection is created with postgres");
+    console.log("connection is created with database");
   });
   app.listen(5000, () => {
     console.log("server is running on http://localhost:5000/");

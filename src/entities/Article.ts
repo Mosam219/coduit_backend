@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { User } from "./User";
 
-@Entity()
+@Entity("articles")
 export class Article {
   @PrimaryColumn({ length: 30 })
   slug: string;
@@ -29,6 +29,20 @@ export class Article {
   updatedAt: Date;
 
   @ManyToOne(() => User)
-  @JoinColumn()
   author: User;
+
+  constructor(
+    slug: string,
+    title: string,
+    description: string,
+    body: string,
+    author: User
+  ) {
+    this.slug = slug;
+    this.title = title;
+    this.description = description;
+    this.body = body;
+    this.author = author;
+    // this.tagList = tagList;
+  }
 }

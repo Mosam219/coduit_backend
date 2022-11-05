@@ -1,16 +1,27 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
-@Entity()
+@Entity("users")
 export class User {
   @PrimaryColumn()
   email: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ nullable: false })
   username: string;
 
+  @Column({ nullable: true })
+  password?: string;
+
   @Column({ type: "text", nullable: true })
-  bio: string;
+  bio?: string;
 
   @Column({ nullable: true })
-  image: string;
+  image?: string;
+
+  token?: string;
+
+  constructor(email: string, username: string, password: string) {
+    this.email = email;
+    this.username = username;
+    this.password = password;
+  }
 }
